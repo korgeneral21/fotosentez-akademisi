@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fotosentez Akademisi</title>
+/* FOTOSENTEZ MODELİ */
+
+.model-section {
+    padding: 90px 7%;
+    background: #071a13;
+}
+
+.model-box {
+    max-width: 1100px;
+    margin: auto;
+    padding: 35px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 25px;
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.input-card {
+    padding: 25px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 18px;
+    text-align: center;
+}
+
+.input-card span {
+    font-size: 35px;
+}
+
+.input-card h3 {
+    margin: 10px 0 15px;
+}
+
+.input-card p {
+    color: #55ed8b;
+    margin-top: 10px;
+}
+
+.input-card input {
+    width: 100%;
+    accent-color: #45df7b;
+}
+
+.reaction {
+    margin: 50px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.molecule,
+.product {
+    min-width: 85px;
+    padding: 15px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    text-align: center;
+    font-size: 30px;
+}
+
+.molecule small,
+.product small,
+.plant-core small {
+    display: block;
+    font-size: 12px;
+    color: #9eb5aa;
+    margin-top: 7px;
+}
+
+.plus,
+.arrow {
+    font-size: 25px;
+    color: #55ed8b;
+    font-weight: bold;
+}
+
+.plant-core {
+    padding: 25px;
+    border-radius: 50%;
+    background: rgba(55,230,125,0.12);
+    border: 2px solid rgba(55,230,125,0.3);
+    text-align: center;
+    font-size: 45px;
+    box-shadow: 0 0 35px rgba(55,230,125,0.15);
+}
+
+.result {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.result h3 {
+    margin-bottom: 15px;
+}
+
+.progress {
+    width: 100%;
+    max-width: 600px;
+    height: 14px;
+    margin: auto;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#progressBar {
+    width: 70%;
+    height: 100%;
+    background: #45df7b;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+#resultText {
+    margin: 18px 0;
+    color: #9eb5aa;
+}
+
+#startButton {
+    padding: 14px 25px;
+    border: none;
+    border-radius: 12px;
+    background: #45df7b;
+    color: #04130c;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#startButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(69,223,123,0.25);
+}
+
+@media (max-width: 700px) {
+
+    .inputs {
+        grid-template-columns: 1fr;
+    }
+
+    .model-box {
+        padding: 20px;
+    }
+
+    .reaction {
+        gap: 10px;
+    }
+
+    .arrow {
+        font-size: 18px;
+    }
+}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #071a13;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+
+        header {
+            width: 100%;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(4, 20, 14, 0.9);
+            border-bottom: 1px solid rgba(80, 255, 160, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #35e879, #0b9b57);
+            font-size: 23px;
+            box-shadow: 0 0 25px rgba(53, 232, 121, 0.25);
+        }
+
+        .logo span {
+            color: #52ed8b;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            color: #b8cfc4;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #55ef8c;
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: calc(100vh - 79px);
+            padding: 80px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            background:
+                radial-gradient(circle at 80% 30%, rgba(44, 220, 117, 0.12), transparent 35%),
+                radial-gradient(circle at 10% 80%, rgba(0, 170, 100, 0.08), transparent 30%);
+        }
+
+        .hero-text {
+            max-width: 650px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 30px;
+            background: rgba(65, 230, 130, 0.1);
+            border: 1px solid rgba(65, 230, 130, 0.25);
+            color: #55ed8b;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 1.05;
+            margin-bottom: 25px;
+        }
+
+        h1 span {
+            color: #51eb87;
+        }
+
+        .hero-text p {
+            color: #a9c0b6;
+            font-size: 17px;
+            line-height: 1.8;
+            max-width: 570px;
+            margin-bottom: 35px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 23px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #45df7b;
+            color: #04130c;
+            box-shadow: 0 8px 25px rgba(69, 223, 123, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(69, 223, 123, 0.35);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.06);
+        }
+
+        /* PHOTOSYNTHESIS VISUAL */
+
+        .hero-visual {
+            width: 430px;
+            height: 430px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(50, 230, 120, 0.14);
+            filter: blur(70px);
+            border-radius: 50%;
+        }
+
+        .leaf {
+            width: 230px;
+            height: 330px;
+            border-radius: 100% 0 100% 0;
+            background: linear-gradient(145deg, #68f294, #0b9d54);
+            transform: rotate(-40deg);
+            box-shadow:
+                0 0 45px rgba(56, 236, 125, 0.3),
+                inset -15px -20px 30px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        .leaf::after {
+            content: "";
+            position: absolute;
+            width: 5px;
+            height: 280px;
+            background: rgba(220,255,230,0.35);
+            left: 50%;
+            top: 25px;
+            transform: rotate(42deg);
+            border-radius: 10px;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 4s infinite ease-in-out;
+        }
+
+        .p1 {
+            width: 14px;
+            height: 14px;
+            background: #ffd84d;
+            top: 55px;
+            right: 70px;
+            box-shadow: 0 0 20px #ffd84d;
+        }
+
+        .p2 {
+            width: 9px;
+            height: 9px;
+            background: #55eaff;
+            bottom: 80px;
+            left: 60px;
+            box-shadow: 0 0 15px #55eaff;
+            animation-delay: 1s;
+        }
+
+        .p3 {
+            width: 11px;
+            height: 11px;
+            background: #ffffff;
+            top: 100px;
+            left: 55px;
+            box-shadow: 0 0 15px white;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* INFO CARDS */
+
+        .info {
+            padding: 80px 7%;
+            background: #06150f;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #91aaa0;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            padding: 28px;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(70,230,130,0.3);
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 18px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #91aaa0;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #718a80;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 850px) {
+
+            nav {
+                display: none;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 60px;
+            }
+
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                width: 330px;
+                height: 330px;
+            }
+
+            .leaf {
+                width: 175px;
+                height: 250px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+   .light-section {
+    padding: 90px 8%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-title span {
+    font-size: 45px;
+}
+
+.section-title h2 {
+    font-size: 38px;
+    margin: 10px 0;
+}
+
+.section-title p {
+    color: #9db7aa;
+    font-size: 17px;
+}
+
+.light-box {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 18px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.light-step {
+    flex: 1;
+    background: linear-gradient(145deg, #0c261b, #081a13);
+    border: 1px solid rgba(69, 223, 123, 0.2);
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.light-step:hover {
+    transform: translateY(-8px);
+    border-color: #45df7b;
+    box-shadow: 0 15px 35px rgba(69, 223, 123, 0.12);
+}
+
+.step-icon {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.light-step h3 {
+    color: #55ed8b;
+    margin-bottom: 12px;
+}
+
+.light-step p {
+    color: #b5c9be;
+    line-height: 1.6;
+}
+
+.flow-arrow {
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    color: #45df7b;
+}
+
+@media (max-width: 900px) {
+    .light-box {
+        flex-direction: column;
+    }
+
+    .flow-arrow {
+        justify-content: center;
+        transform: rotate(90deg);
+    }
+
+    .section-title h2 {
+        font-size: 30px;
+    }
+} .calvin-section {
+    padding: 90px 8%;
+    background: rgba(4, 18, 12, 0.7);
+}
+
+.calvin-box {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.calvin-intro {
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 45px;
+}
+
+.calvin-icon {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.calvin-intro h3 {
+    color: #55ed8b;
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.calvin-intro p {
+    color: #abc1b4;
+    line-height: 1.7;
+}
+
+.calvin-flow {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 16px;
+}
+
+.calvin-step {
+    flex: 1;
+    padding: 25px 18px;
+    text-align: center;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #0d291d, #071a13);
+    border: 1px solid rgba(69, 223, 123, 0.2);
+    transition: 0.3s;
+}
+
+.calvin-step:hover {
+    transform: translateY(-8px);
+    border-color: #45df7b;
+    box-shadow: 0 15px 35px rgba(69, 223, 123, 0.12);
+}
+
+.calvin-number {
+    width: 34px;
+    height: 34px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #45df7b;
+    color: #06150f;
+    font-weight: bold;
+}
+
+.calvin-symbol {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.calvin-step h3 {
+    color: #55ed8b;
+    margin-bottom: 10px;
+}
+
+.calvin-step p {
+    color: #a9bdb1;
+    line-height: 1.5;
+}
+
+.calvin-arrow {
+    display: flex;
+    align-items: center;
+    color: #45df7b;
+    font-size: 30px;
+}
+
+.calvin-equation {
+    max-width: 850px;
+    margin: 45px auto 0;
+    padding: 22px;
+    border-radius: 18px;
+    background: #0b2419;
+    border: 1px solid rgba(69, 223, 123, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    color: #d9eee1;
+    font-size: 18px;
+    flex-wrap: wrap;
+}
+
+.calvin-equation strong {
+    color: #45df7b;
+    font-size: 25px;
+}
+
+@media (max-width: 900px) {
+    .calvin-flow {
+        flex-direction: column;
+    }
+
+    .calvin-arrow {
+        justify-content: center;
+        transform: rotate(90deg);
+    }
+
+    .calvin-equation {
+        gap: 10px;
+    }
+}</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <div class="logo-icon">🌿</div>
+        <div>Fotosentez <span>Akademisi</span></div>
+    </div>
+
+    <nav>
+        <a href="#">Ana Sayfa</a>
+        <a href="#model">Fotosentez Modeli</a>
+        <a href="#isik">Işık Reaksiyonları</a>
+        <a href="#calvin">Calvin Döngüsü</a>
+        <a href="#">Mini Test</a>
+    </nav>
+
+    <div class="menu-btn">☰</div>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <div class="badge">🌱 10. Sınıf Biyoloji</div>
+
+            <h1>
+                Fotosentezi<br>
+                <span>Modelleyerek Öğren.</span>
+            </h1>
+
+            <p>
+                Fotosentez reaksiyonlarının nasıl gerçekleştiğini,
+                ışık reaksiyonlarından Calvin döngüsüne kadar
+                etkileşimli modeller ve anlaşılır bilgilerle keşfet.
+            </p>
+
+            <div class="buttons">
+                <a href="#" class="btn btn-primary">
+                    🌿 Modeli İncele
+                </a>
+
+                <a href="#" class="btn btn-secondary">
+                    📚 Konuyu Öğren
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="hero-visual">
+
+            <div class="glow"></div>
+
+            <div class="particle p1"></div>
+            <div class="particle p2"></div>
+            <div class="particle p3"></div>
+
+            <div class="leaf"></div>
+
+        </div>
+
+    </section>
+
+
+    <section class="info">
+
+        <div class="section-title">
+
+            <h2>Fotosentezin Temel Aşamaları</h2>
+
+            <p>
+                Fotosentez iki temel aşamada incelenebilir.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="card-icon">☀️</div>
+
+                <h3>Işık Reaksiyonları</h3>
+
+                <p>
+                    Işık enerjisi kullanılarak ATP ve NADPH
+                    gibi enerji taşıyan moleküller oluşturulur.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">🔄</div>
+
+                <h3>Calvin Döngüsü</h3>
+
+                <p>
+                    Karbondioksit kullanılarak organik besinlerin
+                    oluşumunda rol oynayan reaksiyonlar gerçekleşir.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon">🌿</div>
+
+                <h3>Fotosentez Ürünleri</h3>
+
+                <p>
+                    Fotosentez sonucunda glikoz gibi organik
+                    maddeler oluşurken oksijen açığa çıkar.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+<section class="model-section" id="model">
+<section class="light-section" id="isik">
+    <div class="section-title">
+        <span>☀️</span>
+        <h2>Işık Reaksiyonları</h2>
+        <p>Fotosentezin ışığa bağlı gerçekleşen ilk aşaması</p>
+    </div>
+
+    <div class="light-box">
+        <div class="light-step">
+            <div class="step-icon">☀️</div>
+            <h3>1. Işık Emilimi</h3>
+            <p>
+                Klorofil pigmentleri güneş ışığını emer.
+                Bu enerji fotosentezin başlamasını sağlar.
+            </p>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="light-step">
+            <div class="step-icon">💧</div>
+            <h3>2. Suyun Parçalanması</h3>
+            <p>
+                Su molekülleri parçalanır. Bu olay sonucunda
+                oksijen açığa çıkar.
+            </p>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="light-step">
+            <div class="step-icon">⚡</div>
+            <h3>3. Enerji Üretimi</h3>
+            <p>
+                Işık enerjisi kullanılarak ATP ve NADPH
+                gibi enerji taşıyıcıları oluşturulur.
+            </p>
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="light-step">
+            <div class="step-icon">🌿</div>
+            <h3>4. Calvin Döngüsü</h3>
+            <p>
+                Oluşan ATP ve NADPH, glikoz üretiminde
+                kullanılmak üzere Calvin döngüsüne aktarılır.
+            </p>
+        </div>
+    </div>
+</section>
+    <div class="section-title">
+        <div class="badge">🧬 Etkileşimli Model</div>
+
+        <h2>Fotosentez Reaksiyon Modeli</h2>
+
+        <p>
+            Fotosentezin gerçekleşmesi için gerekli maddeleri
+            değiştirerek reaksiyonun nasıl işlediğini keşfet.
+        </p>
+    </div>
+
+    <div class="model-box">
+
+        <div class="inputs">
+
+            <div class="input-card">
+                <span>☀️</span>
+                <h3>Işık</h3>
+
+                <input
+                    type="range"
+                    id="light"
+                    min="0"
+                    max="100"
+                    value="70"
+                >
+
+                <p><b id="lightValue">70</b>%</p>
+            </div>
+
+
+            <div class="input-card">
+                <span>💧</span>
+                <h3>Su</h3>
+
+                <input
+                    type="range"
+                    id="water"
+                    min="0"
+                    max="100"
+                    value="70"
+                >
+
+                <p><b id="waterValue">70</b>%</p>
+            </div>
+
+
+            <div class="input-card">
+                <span>🫧</span>
+                <h3>CO₂</h3>
+
+                <input
+                    type="range"
+                    id="co2"
+                    min="0"
+                    max="100"
+                    value="70"
+                >
+
+                <p><b id="co2Value">70</b>%</p>
+            </div>
+
+        </div>
+
+
+        <div class="reaction">
+
+            <div class="molecule">
+                ☀️
+                <small>Işık</small>
+            </div>
+
+            <div class="plus">+</div>
+
+            <div class="molecule">
+                💧
+                <small>H₂O</small>
+            </div>
+
+            <div class="plus">+</div>
+
+            <div class="molecule">
+                🫧
+                <small>CO₂</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="plant-core">
+                🌿
+                <small>Kloroplast</small>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="products">
+
+                <div class="product">
+                    🍬
+                    <small>Glikoz</small>
+                </div>
+
+                <div class="product">
+                    💨
+                    <small>O₂</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="result">
+
+            <h3>Fotosentez Durumu</h3>
+
+            <div class="progress">
+                <div id="progressBar"></div>
+            </div>
+
+            <p id="resultText">
+                Fotosentez için değerleri ayarlayabilirsin.
+            </p>
+
+            <button id="startButton">
+                ▶ Fotosentezi Başlat
+            </button>
+
+        </div>
+
+    </div>
+
+</section>	
+<section class="calvin-section" id="calvin">
+    <div class="section-title">
+        <span>🔄</span>
+        <h2>Calvin Döngüsü</h2>
+        <p>Işıktan bağımsız gerçekleşen karbon bağlama aşaması</p>
+    </div>
+
+    <div class="calvin-box">
+
+        <div class="calvin-intro">
+            <div class="calvin-icon">🌿</div>
+            <h3>Bitki CO₂'yi Nasıl Glikoza Dönüştürür?</h3>
+            <p>
+                Calvin döngüsünde atmosferden alınan karbondioksit,
+                ışık reaksiyonlarında üretilen ATP ve NADPH kullanılarak
+                organik maddelerin oluşumunda değerlendirilir.
+            </p>
+        </div>
+
+        <div class="calvin-flow">
+
+            <div class="calvin-step">
+                <div class="calvin-number">1</div>
+                <div class="calvin-symbol">🫧</div>
+                <h3>CO₂ Alınır</h3>
+                <p>Karbondioksit döngüye katılır.</p>
+            </div>
+
+            <div class="calvin-arrow">→</div>
+
+            <div class="calvin-step">
+                <div class="calvin-number">2</div>
+                <div class="calvin-symbol">⚡</div>
+                <h3>Enerji Kullanılır</h3>
+                <p>ATP ve NADPH enerji sağlar.</p>
+            </div>
+
+            <div class="calvin-arrow">→</div>
+
+            <div class="calvin-step">
+                <div class="calvin-number">3</div>
+                <div class="calvin-symbol">🔄</div>
+                <h3>Karbon İşlenir</h3>
+                <p>Karbon bileşikleri dönüştürülür.</p>
+            </div>
+
+            <div class="calvin-arrow">→</div>
+
+            <div class="calvin-step">
+                <div class="calvin-number">4</div>
+                <div class="calvin-symbol">🍬</div>
+                <h3>Organik Madde</h3>
+                <p>Glikoz oluşumuna katkı sağlanır.</p>
+            </div>
+
+        </div>
+
+        <div class="calvin-equation">
+            <span>🫧 CO₂</span>
+            <strong>+</strong>
+            <span>⚡ ATP + NADPH</span>
+            <strong>→</strong>
+            <span>🍬 Organik Madde</span>
+        </div>
+
+    </div>
+</section></main>
+
+
+<footer>
+    Fotosentez Akademisi • 10. Sınıf Biyoloji Projesi
+</footer>
+
+<script>
+    const light = document.getElementById("light");
+    const water = document.getElementById("water");
+    const co2 = document.getElementById("co2");
+
+    const lightValue = document.getElementById("lightValue");
+    const waterValue = document.getElementById("waterValue");
+    const co2Value = document.getElementById("co2Value");
+
+    const progressBar = document.getElementById("progressBar");
+    const resultText = document.getElementById("resultText");
+    const startButton = document.getElementById("startButton");
+
+
+    function updateValues() {
+
+        lightValue.textContent = light.value;
+        waterValue.textContent = water.value;
+        co2Value.textContent = co2.value;
+
+    }
+
+
+    light.addEventListener("input", updateValues);
+    water.addEventListener("input", updateValues);
+    co2.addEventListener("input", updateValues);
+
+
+    startButton.addEventListener("click", function() {
+
+        const l = Number(light.value);
+        const w = Number(water.value);
+        const c = Number(co2.value);
+
+        const result = Math.round((l + w + c) / 3);
+
+        progressBar.style.width = result + "%";
+
+
+        if (result >= 80) {
+
+            resultText.textContent =
+                "🌿 Fotosentez hızı yüksek! Koşullar oldukça uygun.";
+
+        } 
+        else if (result >= 50) {
+
+            resultText.textContent =
+                "☀️ Fotosentez gerçekleşiyor. Koşullar orta düzeyde.";
+
+        } 
+        else if (result >= 25) {
+
+            resultText.textContent =
+                "⚠️ Fotosentez yavaşlıyor. Bazı koşullar yetersiz.";
+
+        } 
+        else {
+
+            resultText.textContent =
+                "❌ Fotosentez için koşullar oldukça yetersiz.";
+
+        }
+
+    });
+
+
+    updateValues();
+</script>
+</body>
+</html>
